@@ -49,8 +49,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onAddAuthor: newAuthor => dispatch(actionCreators.addAuthor(newAuthor)),
-    onDeleteAuthor: author => dispatch(actionCreators.deleteAuthor(author))
+    onAddAuthor: newAuthor => dispatch(actionCreators.addAuthor(newAuthor))
   };
 };
 export default connect(
