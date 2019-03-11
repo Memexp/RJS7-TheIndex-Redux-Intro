@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 
 // Data
-import authors from "./data";
+// import authors from "./data";
 
 // Components
 import Sidebar from "./Sidebar";
 import AuthorsList from "./AuthorsList";
 
-class App extends Component {
-  state = {
-    authors: authors,
-    newAuthorId: 5
-  };
+import { connect } from "react-redux";
+import * as actionCreators from "./store/actions";
 
-  addAuthor = () => {
+class App extends Component {
+  render() {
     const newAuthor = {
-      id: this.state.newAuthorId,
+      id: 5,
       first_name: "Author",
       last_name: "McAuthorFace",
       imageUrl:
@@ -27,21 +25,16 @@ class App extends Component {
         }
       ]
     };
-    this.setState({
-      authors: this.state.authors.concat(newAuthor),
-      newAuthorId: this.state.newAuthorId + 1
-    });
-  };
-
-  render() {
     return (
       <div id="app" className="container-fluid">
         <div className="row">
           <div className="col-2">
-            <Sidebar addAuthorHandler={this.addAuthor} />
+            <Sidebar
+              addAuthorHandler={() => this.props.onAddAuthor(newAuthor)}
+            />
           </div>
           <div className="content col-10">
-            <AuthorsList authors={this.state.authors} />
+            <AuthorsList authors={this.props.auth} />
           </div>
         </div>
       </div>
@@ -49,4 +42,18 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    auth: state.authors
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddAuthor: newAuthor => dispatch(actionCreators.addAuthor(newAuthor)),
+    onDeleteAuthor: author => dispatch(actionCreators.deleteAuthor(author))
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
